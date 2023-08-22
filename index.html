@@ -30,6 +30,27 @@
       </a-sphere>
       
       <a-camera gps-camera rotation-reader> </a-camera>
+      
+      <!-- Interfaz de usuario -->
+      <div class="ui-container">
+        <label>Rotación:</label>
+        <input id="rotation-input" type="range" min="0" max="360" value="0" />
+        
+        <label>Escala:</label>
+        <input id="scale-input" type="range" min="0.5" max="2" step="0.1" value="1" />
+      </div>
     </a-scene>
   </body>
+  
+  <style>
+    /* Estilos de la interfaz de usuario */
+    .ui-container {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 10px;
+      border-radius: 5px;
+    }
+  </style>
 </html>
