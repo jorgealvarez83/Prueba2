@@ -19,10 +19,16 @@
       renderer="antialias: true; alpha: true"
     >
       <a-camera gps-new-camera="gpsMinDistance: 5"></a-camera>
+       <a-text
+        value="quien es este pokemon?"
+        look-at="[gps-camera]"
+        scale="120 120 120"
+        gps-entity-place="latitude: 6.2510278; longitude: -75.5600832;"
+      ></a-text>
       <a-entity
         gltf-model="https://cdn.glitch.global/ce7134ba-aa63-4659-b6c6-708a1228887b/asset.gltf?v=1692670999084"
-        rotation="0 180 0"
-        scale="10 10 10"
+        look-at="[gps-camera]"
+        scale="5 5 5"
         gps-new-entity-place="longitude: -75.5600832; latitude: 6.2510278;"
         animation-mixer
       />
