@@ -59,6 +59,32 @@
       // Obtener elementos de la escena
       const textoElemento = document.getElementById('texto');
 
+      // Variable para controlar el estado de escalado
+      let escalaAplicada = false;
+
+      // Función para cambiar la escala del texto
+      function cambiarEscalaTexto() {
+        if (escalaAplicada) {
+          // Si ya se aplicó la escala, restaurar la escala original
+          textoElemento.setAttribute('scale', '2 2 2');
+        } else {
+          // Si no se aplicó la escala, aumentar la escala 5 veces
+          textoElemento.setAttribute('scale', '10 10 10');
+        }
+
+        // Cambiar el estado de escalado
+        escalaAplicada = !escalaAplicada;
+      }
+
+      // Detectar eventos touchstart en el cuerpo del documento
+      document.body.addEventListener('touchstart', (event) => {
+        // Verificar si hay dos toques en la pantalla
+        if (event.touches.length === 2) {
+          // Cambiar la escala del texto
+          cambiarEscalaTexto();
+        }
+      });
+
       // Función para actualizar elementos de la escena con los datos filtrados
       function actualizarElementosEscena(datosFiltrados) {
         const posicionFiltrada = datosFiltrados.posicion;
