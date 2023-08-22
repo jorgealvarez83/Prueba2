@@ -14,16 +14,14 @@
       vr-mode-ui="enabled: false"
       arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
     >
-      <!-- Video de YouTube -->
-      <a-video
-        src="https://cdn.glitch.me/ce7134ba-aa63-4659-b6c6-708a1228887b/carro%20rojo1.mp4?v=1692698173841"
-        width="16"
-        height="9"
-        gps-projected-entity-place="latitude: 6.2510278; longitude: -75.5600832;"
-        position="0 1 -5"
+      <a-text
+        value="GPS AR Casa de la tia"
         look-at="[gps-camera]"
-      ></a-video>
-
+        scale="2 2 2"
+        gps-projected-entity-place="latitude: 6.2510278; longitude: -75.5600832;"
+        position="0 0.2 0"
+      ></a-text>
+      
       <a-camera gps-camera rotation-reader> </a-camera>
     </a-scene>
   </body>
