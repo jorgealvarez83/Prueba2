@@ -7,9 +7,6 @@
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
-    
-    <!-- Biblioteca del filtro de Kalman -->
-    <script src="https://cdn.jsdelivr.net/npm/kalmanjs@1.0.0/dist/kalman.min.js"></script>
   </head>
 
   <body>
@@ -19,7 +16,6 @@
     >
       <!-- Texto -->
       <a-text
-        id="texto"
         value="yorsh en AR GPS por La Casa."
         look-at="[gps-camera]"
         scale="2 2 2"
@@ -27,18 +23,19 @@
         position="0 0.2 0"
       ></a-text>
       
-      <!-- Controles de escala y rotación en la interfaz -->
-      <div class="ui-container">
-        <label>Rotación:</label>
-        <input id="rotation-input" type="range" min="0" max="360" value="0" style="width: 80vw;" />
-        
-        <label>Escala:</label>
-        <input id="scale-input" type="range" min="0.1" max="1" step="0.1" value="1" style="width: 80vw;" />
-      </div>
-      
-      <a-camera gps-camera rotation-reader> </a-camera>
+      <!-- Configuración de la cámara frontal -->
+      <a-camera
+        user-height="1.6"
+        rotation-reader
+      >
+        <a-entity
+          camera="active: true; facingMode: user"
+          look-controls-enabled="false"
+          wasd-controls-enabled="false"
+        ></a-entity>
+      </a-camera>
     </a-scene>
-    
+
     <style>
       /* Estilos de la interfaz de usuario */
       .ui-container {
@@ -51,73 +48,5 @@
         width: 90vw;
       }
     </style>
-
-    <script>
-      // Crear una instancia del filtro de Kalman
-      const kalmanFilter = new KalmanFilter({ R: 0.01, Q: 3 });
-
-      // Obtener elementos de la escena
-      const textoElemento = document.getElementById('texto');
-
-      // Variable para controlar el estado de escalado
-      let escalaAplicada = false;
-
-      // Función para cambiar la escala del texto
-      function cambiarEscalaTexto() {
-        if (escalaAplicada) {
-          // Si ya se aplicó la escala, restaurar la escala original
-          textoElemento.setAttribute('scale', '2 2 2');
-        } else {
-          // Si no se aplicó la escala, aumentar la escala 5 veces
-          textoElemento.setAttribute('scale', '10 10 10');
-        }
-
-        // Cambiar el estado de escalado
-        escalaAplicada = !escalaAplicada;
-      }
-
-      // Detectar eventos touchstart en el cuerpo del documento
-      document.body.addEventListener('touchstart', (event) => {
-        // Verificar si hay dos toques en la pantalla
-        if (event.touches.length === 2) {
-          // Cambiar la escala del texto
-          cambiarEscalaTexto();
-        }
-      });
-
-      // Función para actualizar elementos de la escena con los datos filtrados
-      function actualizarElementosEscena(datosFiltrados) {
-        const posicionFiltrada = datosFiltrados.posicion;
-
-        // Actualizar la posición del texto en la escena usando la posición filtrada
-        textoElemento.setAttribute('gps-projected-entity-place', posicionFiltrada);
-      }
-
-      // Simulación de obtención de datos de GPS
-      function obtenerDatosGPS() {
-        // Simular latitud y longitud del GPS
-        const latitud = 6.2510278 + Math.random() * 0.001;
-        const longitud = -75.5600832 + Math.random() * 0.001;
-        return { latitud, longitud };
-      }
-
-      // Bucle de actualización continua
-      function buclePrincipal() {
-        // Obtener datos de GPS (latitud, longitud)
-        const { latitud, longitud } = obtenerDatosGPS();
-
-        // Aplicar el filtro de Kalman a los datos de GPS
-        const datosFiltrados = kalmanFilter.filter({ latitud, longitud });
-
-        // Actualizar los elementos de la escena con datos filtrados
-        actualizarElementosEscena(datosFiltrados);
-
-        // Repetir el bucle
-        requestAnimationFrame(buclePrincipal);
-      }
-
-      // Iniciar el bucle principal
-      buclePrincipal();
-    </script>
   </body>
 </html>
