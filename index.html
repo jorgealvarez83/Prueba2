@@ -7,6 +7,8 @@
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <!-- Biblioteca del filtro de Kalman -->
+    <script src="https://cdn.jsdelivr.net/npm/kalmanjs@1.0.0/dist/kalman.min.js"></script>
   </head>
 
   <body>
@@ -16,12 +18,15 @@
     >
       <!-- Texto -->
       <a-text
+        id="texto"
         value="yorsh en AR GPS por La Casa."
         look-at="[gps-camera]"
         scale="2 2 2"
         gps-projected-entity-place="latitude: 6.2510278; longitude: -75.5600832;"
-        position="0 0.2 0"
       ></a-text>
+      
+      <!-- Elemento para controlar la posición del texto -->
+      <a-entity id="position-control" gps-projected-entity-place=""></a-entity>
       
       <!-- Configuración de la cámara frontal -->
       <a-camera
@@ -48,5 +53,83 @@
         width: 90vw;
       }
     </style>
+
+    <script>
+      // Crear una instancia del filtro de Kalman
+      const kalmanFilter = new KalmanFilter({ R: 0.01, Q: 3 });
+
+      // Obtener el elemento para controlar la posición del texto
+      const positionControl = document.getElementById('position-control');
+      let isTextInFront = false;
+
+      // Función para cambiar la posición del texto
+      function cambiarPosicionTexto() {
+        if (!isTextInFront) {
+          // Obtener la posición y rotación de la cámara
+          const camera = document.querySelector('[gps-camera]');
+          const cameraPosition = camera.getAttribute('position');
+          const cameraRotation = camera.getAttribute('rotation');
+
+          // Calcular la posición delante de la cámara (aproximadamente 20 cm)
+          const distancia = -0.2; // Ajuste para 20 cm
+          const posicionFrente = {
+            x: cameraPosition.x + distancia * Math.sin(cameraRotation.y * (Math.PI / 180)),
+            y: cameraPosition.y,
+            z: cameraPosition.z - distancia * Math.cos(cameraRotation.y * (Math.PI / 180)),
+          };
+
+          // Actualizar la posición del control de posición
+          positionControl.setAttribute('gps-projected-entity-place', posicionFrente);
+
+          // Cambiar el estado de la posición del texto
+          isTextInFront = true;
+        } else {
+          // Restaurar la posición original del texto
+          positionControl.setAttribute('gps-projected-entity-place', '');
+          isTextInFront = false;
+        }
+      }
+
+      // Detectar eventos touchstart en el cuerpo del documento
+      document.body.addEventListener('touchstart', (event) => {
+        // Cambiar la posición del texto al tocar la pantalla
+        cambiarPosicionTexto();
+      });
+
+      // Función para actualizar elementos de la escena con los datos filtrados
+      function actualizarElementosEscena(datosFiltrados) {
+        const posicionFiltrada = datosFiltrados.posicion;
+
+        // Actualizar la posición del texto en la escena usando la posición filtrada
+        const textoElemento = document.getElementById('texto');
+        textoElemento.setAttribute('gps-projected-entity-place', posicionFiltrada);
+      }
+
+      // Simulación de obtención de datos de GPS
+      function obtenerDatosGPS() {
+        // Simular latitud y longitud del GPS
+        const latitud = 6.2510278 + Math.random() * 0.001;
+        const longitud = -75.5600832 + Math.random() * 0.001;
+        return { latitud, longitud };
+      }
+
+      // Bucle de actualización continua
+      function buclePrincipal() {
+        // Obtener datos de GPS (latitud, longitud)
+        const { latitud, longitud } = obtenerDatosGPS();
+
+        // Aplicar el filtro de Kalman a los datos de GPS
+        const datosFiltrados = kalmanFilter.filter({ latitud, longitud });
+
+        // Actualizar los elementos de la escena con datos filtrados
+        actualizarElementosEscena(datosFiltrados);
+
+        // Repetir el bucle
+        requestAnimationFrame(buclePrincipal);
+      }
+
+      // Iniciar el bucle principal
+      buclePrincipal();
+    </script>
   </body>
 </html>
