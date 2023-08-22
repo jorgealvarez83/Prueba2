@@ -20,6 +20,15 @@
         scale="100 100 100"
         gps-projected-entity-place="latitude: 6.2510278; longitude: -75.5600832;"
       ></a-text>
+      
+      <!-- Objeto 3D: Esfera -->
+      <a-sphere radius="0.05" color="red"
+                 gps-projected-entity-place="latitude: 6.2510278; longitude: -75.5600832;"
+                 rotation="0 0 0" scale="1 1 1">
+        <!-- Controles de escala y rotación -->
+        <a-entity rotation-control scale-control></a-entity>
+      </a-sphere>
+      
       <a-camera gps-camera rotation-reader> </a-camera>
     </a-scene>
   </body>
