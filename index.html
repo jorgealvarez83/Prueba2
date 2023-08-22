@@ -2,41 +2,43 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>GeoAR.js demo</title>
+    <!-- Cargar A-Frame y componentes necesarios -->
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/kalmanjs@1.0.0/dist/kalman.min.js"></script>
   </head>
-
   <body>
     <a-scene
       vr-mode-ui="enabled: false"
       arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
     >
+      <!-- Video de YouTube -->
+      <a-video
+        id="video"
+        src="https://www.youtube.com/embed/ZibjFVr8s3U"
+        width="5"
+        height="3"
+        gps-projected-entity-place="latitude: 6.2510278; longitude: -75.5600832;"
+        position="0 0.5 -2"
+        look-at="[gps-camera]"
+      ></a-video>
+
       <!-- Texto -->
       <a-text
+        id="texto"
         value="yorsh en AR GPS por La Casa."
         look-at="[gps-camera]"
         scale="2 2 2"
         gps-projected-entity-place="latitude: 6.2510278; longitude: -75.5600832;"
+        position="0 0.2 0"
       ></a-text>
       
-      <!-- Configuración de la cámara frontal -->
-      <a-camera
-        user-height="1.6"
-        rotation-reader
-      >
-        <a-entity
-          camera="active: true; facingMode: user"
-          look-controls-enabled="false"
-          wasd-controls-enabled="false"
-        ></a-entity>
-      </a-camera>
+      <!-- Resto de tu contenido -->
+      <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
-
+    
     <style>
       /* Estilos de la interfaz de usuario */
       .ui-container {
@@ -51,19 +53,21 @@
     </style>
 
     <script>
-      // Crear una instancia del filtro de Kalman con valores ajustados
-      const kalmanFilter = new KalmanFilter({ R: 0.05, Q: 0.1 });
+      // Crear una instancia del filtro de Kalman
+      const kalmanFilter = new KalmanFilter({ R: 0.01, Q: 3 });
+
+      // Obtener elementos de la escena
+      const textoElemento = document.getElementById('texto');
 
       // Función para actualizar elementos de la escena con los datos filtrados
       function actualizarElementosEscena(datosFiltrados) {
         const posicionFiltrada = datosFiltrados.posicion;
 
         // Actualizar la posición del texto en la escena usando la posición filtrada
-        const textoElemento = document.querySelector('a-text');
         textoElemento.setAttribute('gps-projected-entity-place', posicionFiltrada);
       }
 
-      // Función simulada para obtener datos de GPS
+      // Simulación de obtención de datos de GPS
       function obtenerDatosGPS() {
         // Simular latitud y longitud del GPS
         const latitud = 6.2510278 + Math.random() * 0.001;
@@ -86,8 +90,8 @@
         requestAnimationFrame(buclePrincipal);
       }
 
-      // Iniciar el bucle principal
-      buclePrincipal();
+      // Iniciar el bucle principal después de que se cargue la página
+      window.addEventListener('load', buclePrincipal);
     </script>
   </body>
 </html>
