@@ -62,7 +62,7 @@
       const positionControl = document.getElementById('position-control');
       let isTextInFront = false;
 
-      // Función para cambiar la posición del texto
+      // Función para cambiar la posición del texto y enviar el correo simulado
       function cambiarPosicionTexto() {
         if (!isTextInFront) {
           // Obtener la posición y rotación de la cámara
@@ -83,6 +83,9 @@
 
           // Cambiar el estado de la posición del texto
           isTextInFront = true;
+
+          // Simular el envío de un correo con las coordenadas actuales
+          enviarCorreoConCoordenadas(latitudActual, longitudActual);
         } else {
           // Restaurar la posición original del texto
           positionControl.setAttribute('gps-projected-entity-place', '');
@@ -90,33 +93,30 @@
         }
       }
 
-      // Detectar eventos touchstart en el cuerpo del documento
-      document.body.addEventListener('touchstart', (event) => {
-        // Cambiar la posición del texto al tocar la pantalla
-        cambiarPosicionTexto();
-      });
-
-      // Función para actualizar elementos de la escena con los datos filtrados
-      function actualizarElementosEscena(datosFiltrados) {
-        const posicionFiltrada = datosFiltrados.posicion;
-
-        // Actualizar la posición del texto en la escena usando la posición filtrada
-        const textoElemento = document.getElementById('texto');
-        textoElemento.setAttribute('gps-projected-entity-place', posicionFiltrada);
+      // Función simulada para enviar el correo con las coordenadas
+      function enviarCorreoConCoordenadas(latitud, longitud) {
+        // Simulación de envío de correo electrónico
+        const correoDestino = 'darkmaster1155@gmail.com';
+        const asunto = 'Coordenadas Actuales';
+        const contenido = `Latitud: ${latitud}\nLongitud: ${longitud}`;
+        
+        console.log(`Correo enviado a: ${correoDestino}`);
+        console.log(`Asunto: ${asunto}`);
+        console.log(`Contenido:\n${contenido}`);
       }
 
-      // Simulación de obtención de datos de GPS
-      function obtenerDatosGPS() {
-        // Simular latitud y longitud del GPS
-        const latitud = 6.2510278 + Math.random() * 0.001;
-        const longitud = -75.5600832 + Math.random() * 0.001;
-        return { latitud, longitud };
-      }
+      // Variables para almacenar las coordenadas actuales
+      let latitudActual = 0;
+      let longitudActual = 0;
 
       // Bucle de actualización continua
       function buclePrincipal() {
         // Obtener datos de GPS (latitud, longitud)
         const { latitud, longitud } = obtenerDatosGPS();
+
+        // Guardar las coordenadas actuales
+        latitudActual = latitud;
+        longitudActual = longitud;
 
         // Aplicar el filtro de Kalman a los datos de GPS
         const datosFiltrados = kalmanFilter.filter({ latitud, longitud });
@@ -126,6 +126,14 @@
 
         // Repetir el bucle
         requestAnimationFrame(buclePrincipal);
+      }
+
+      // Simulación de obtención de datos de GPS
+      function obtenerDatosGPS() {
+        // Simular latitud y longitud del GPS
+        const latitud = 6.2510278 + Math.random() * 0.001;
+        const longitud = -75.5600832 + Math.random() * 0.001;
+        return { latitud, longitud };
       }
 
       // Iniciar el bucle principal
