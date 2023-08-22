@@ -14,12 +14,7 @@
       vr-mode-ui="enabled: false"
       arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
     >
-      <a-text
-        value="La Prueba AR de Yorsh"
-        look-at="[gps-camera]"
-        scale="120 120 120"
-        gps-entity-place="latitude: 6.2507404; longitude: -75.5626813;"
-      ></a-text>
+     <a-entity gltf-model="https://github.com/jorgealvarez83/Prueba2/blob/main/assets/magnemite/scene.gltf" rotation="0 180 0" scale="0.15 0.15 0.15" gps-entity-place="longitude: -75.56261762052361; latitude: 6.249381294479826;" animation-mixer/>
       <a-camera gps-camera rotation-reader> </a-camera>
     </a-scene>
   </body>
