@@ -1,15 +1,31 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>AR.js A-Frame Location-based</title>
-<script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-<script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js'></script>
-<script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js'></script>
-</head>
-<body>
-<a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false' renderer='antialias: true; alpha: true'>
-    <a-camera gps-new-camera='gpsMinDistance: 5'></a-camera>
-    <a-entity gltf-model="./assets/magnemite/scene.gltf" rotation="0 180 0" scale="0.15 0.15 0.15" gps-new-entity-place="longitude: -75.56261762052361; latitude: 6.249381294479826;" animation-mixer/></a-entity>
-</a-scene>
-</body>
+  <head>
+    <title>AR.js A-Frame Location-based</title>
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"
+    ></script>
+  </head>
+  <body>
+    <a-scene
+      vr-mode-ui="enabled: false"
+      arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false"
+      renderer="antialias: true; alpha: true"
+    >
+      <a-camera gps-new-camera="gpsMinDistance: 5"></a-camera>
+      <a-entity
+        gltf-model="https://cdn.glitch.global/ce7134ba-aa63-4659-b6c6-708a1228887b/asset.gltf?v=1692670999084"
+        rotation="0 180 0"
+        scale="10 10 10"
+        gps-new-entity-place="longitude: -75.5600832; latitude: 6.2510278;"
+        animation-mixer
+      />
+    </a-scene>
+  </body>
 </html>
